@@ -138,57 +138,43 @@ const heroPhotoUrl = unsplashUrl(photos.heroBg.id, 1400, 78);
     position: relative;
   }
 
-  /* Photographic backdrop. Sits behind the LEFT column (the text),
-     bleeds slightly off-canvas to the left, fades to paper on the
-     right edge so the headline and CTAs sit on tinted paper. */
+  /* Photographic backdrop. Full-bleed behind the entire hero.
+     Bleeds off-canvas on the sides for a true edge-to-edge image.
+     A soft vertical fade keeps the photo from clashing with the
+     section that follows. */
   .hero__photo {
     position: absolute;
-    inset: clamp(-2rem, -1rem + 0vw, 0rem) clamp(0rem, 0rem + 4vw, 5rem)
-           clamp(-3rem, -2rem + 0vw, 0rem) clamp(-3rem, -2rem + 0vw, 0rem);
+    inset: 0;
     z-index: 0;
     overflow: hidden;
-    border-radius: 24px;
     background-color: var(--paper-2);
-    -webkit-mask-image:
-      linear-gradient(to right,
-        #000 0%, #000 45%,
-        oklch(0 0 0 / 0.85) 60%,
-        oklch(0 0 0 / 0.4) 78%,
-        transparent 100%);
-    mask-image:
-      linear-gradient(to right,
-        #000 0%, #000 45%,
-        oklch(0 0 0 / 0.85) 60%,
-        oklch(0 0 0 / 0.4) 78%,
-        transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 78%, oklch(0 0 0 / 0.4) 92%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 78%, oklch(0 0 0 / 0.4) 92%, transparent 100%);
   }
   .hero__photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 60% 35%;
     display: block;
     filter: grayscale(1) contrast(1.05) brightness(0.95)
             sepia(1) hue-rotate(82deg) saturate(0.55);
-    /* No multiply blend — it darkens the paper underneath and fights the text. */
-    opacity: 0.55;
+    opacity: 0.45;
   }
 
   /* Copy sits on its own paper plate so the headline, subhead, and
-     CTAs are guaranteed high-contrast regardless of the photo. The
-     plate fades out to the right edge so the photo can still bleed
-     in where the dashboard begins. */
+     CTAs are guaranteed high-contrast regardless of the photo.
+     The plate is now solid paper (no right-edge fade) since the
+     photo no longer competes with the text. */
   .hero__copy {
     position: relative;
     z-index: 1;
-    padding: clamp(1.25rem, 0.75rem + 1.5vw, 2rem) clamp(1.25rem, 0.75rem + 1.5vw, 2rem);
-    margin-inline-start: clamp(-1.25rem, -0.75rem + -1.5vw, 0rem);
-    background:
-      linear-gradient(to right,
-        var(--paper) 0%,
-        var(--paper) 60%,
-        oklch(from var(--paper) l c h / 0.85) 78%,
-        oklch(from var(--paper) l c h / 0) 100%);
-    border-radius: 14px;
+    padding: clamp(1.5rem, 0.9rem + 1.8vw, 2.5rem);
+    background: oklch(from var(--paper) l c h / 0.94);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    backdrop-filter: none;
   }
 
   .hero__eyebrow { margin-bottom: 1.25rem; }
@@ -448,7 +434,7 @@ const heroPhotoUrl = unsplashUrl(photos.heroBg.id, 1400, 78);
 
   @media (max-width: 900px) {
     .hero__grid { grid-template-columns: 1fr; gap: 2.5rem; }
-    .hero__photo { inset: -1rem -1rem -3rem -1rem; }
+    .hero__photo img { object-position: center 30%; }
     .hero__mock { transform: none; }
     .dash__body { grid-template-columns: 1fr; }
     .dash__nav { display: none; }
@@ -457,5 +443,6 @@ const heroPhotoUrl = unsplashUrl(photos.heroBg.id, 1400, 78);
   }
   @media (max-width: 560px) {
     .hero__photo { display: none; }
+    .hero__copy { background: var(--paper); }
   }
 </style>
