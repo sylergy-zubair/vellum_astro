@@ -169,12 +169,27 @@ const heroPhotoUrl = unsplashUrl(photos.heroBg.id, 1400, 78);
     display: block;
     filter: grayscale(1) contrast(1.05) brightness(0.95)
             sepia(1) hue-rotate(82deg) saturate(0.55);
-    mix-blend-mode: multiply;
-    opacity: 0.88;
+    /* No multiply blend — it darkens the paper underneath and fights the text. */
+    opacity: 0.55;
   }
 
-  /* Make sure the copy sits above the photo */
-  .hero__copy { position: relative; z-index: 1; }
+  /* Copy sits on its own paper plate so the headline, subhead, and
+     CTAs are guaranteed high-contrast regardless of the photo. The
+     plate fades out to the right edge so the photo can still bleed
+     in where the dashboard begins. */
+  .hero__copy {
+    position: relative;
+    z-index: 1;
+    padding: clamp(1.25rem, 0.75rem + 1.5vw, 2rem) clamp(1.25rem, 0.75rem + 1.5vw, 2rem);
+    margin-inline-start: clamp(-1.25rem, -0.75rem + -1.5vw, 0rem);
+    background:
+      linear-gradient(to right,
+        var(--paper) 0%,
+        var(--paper) 60%,
+        oklch(from var(--paper) l c h / 0.85) 78%,
+        oklch(from var(--paper) l c h / 0) 100%);
+    border-radius: 14px;
+  }
 
   .hero__eyebrow { margin-bottom: 1.25rem; }
   .hero__title { margin-bottom: 1.1rem; }
