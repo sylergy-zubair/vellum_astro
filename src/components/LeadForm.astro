@@ -1,0 +1,275 @@
+---
+/* LeadForm — vanilla, accessible, ~30 lines of JS. Posts to /api/lead.
+   States: idle | submitting | success | error. */
+---
+<form class="lead" data-lead-form novalidate aria-labelledby="lead-form-title">
+  <h3 id="lead-form-title" class="lead__title">Get started with Vellum</h3>
+  <p class="lead__sub">Tell us a little about your agency. We will follow up within one working day.</p>
+
+  <fieldset class="lead__intents" aria-label="I am interested in">
+    <legend class="sr-only">Choose what you are interested in</legend>
+    <label class="lead__chip">
+      <input type="radio" name="intent" value="trial" checked />
+      <span>14-day trial</span>
+    </label>
+    <label class="lead__chip">
+      <input type="radio" name="intent" value="demo" />
+      <span>Guided demo</span>
+    </label>
+    <label class="lead__chip">
+      <input type="radio" name="intent" value="waitlist" />
+      <span>Waitlist</span>
+    </label>
+  </fieldset>
+
+  <div class="lead__grid">
+    <div class="lead__field">
+      <label for="lead-name">Full name</label>
+      <input id="lead-name" name="name" type="text" required autocomplete="name" />
+      <span class="lead__error" data-error-for="name"></span>
+    </div>
+    <div class="lead__field">
+      <label for="lead-email">Work email</label>
+      <input id="lead-email" name="email" type="email" required autocomplete="email" inputmode="email" />
+      <span class="lead__error" data-error-for="email"></span>
+    </div>
+    <div class="lead__field">
+      <label for="lead-agency">Agency name</label>
+      <input id="lead-agency" name="agency" type="text" required autocomplete="organization" />
+      <span class="lead__error" data-error-for="agency"></span>
+    </div>
+    <div class="lead__field">
+      <label for="lead-branches">Branches</label>
+      <select id="lead-branches" name="branches" required>
+        <option value="">Select…</option>
+        <option>1</option>
+        <option>2 to 4</option>
+        <option>5 to 8</option>
+        <option>9+</option>
+      </select>
+      <span class="lead__error" data-error-for="branches"></span>
+    </div>
+  </div>
+
+  <div class="lead__field">
+    <label for="lead-message">Anything we should know? <span class="lead__opt">(optional)</span></label>
+    <textarea id="lead-message" name="message" rows="3"></textarea>
+  </div>
+
+  <button type="submit" class="lead__submit" data-submit>
+    <span class="lead__submit-label">Send</span>
+    <svg class="lead__spinner" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="28 10" />
+    </svg>
+  </button>
+
+  <p class="lead__legal">
+    By sending, you agree to our <a href="#">privacy</a> and <a href="#">terms</a>. UK GDPR compliant.
+  </p>
+
+  <div class="lead__status" role="status" aria-live="polite" data-status></div>
+</form>
+
+<style>
+  .lead { display: flex; flex-direction: column; gap: 1.1rem; color: var(--ink); }
+  .lead__title { font-family: var(--font-display); font-size: 1.6rem; color: var(--ink); }
+  .lead__sub { color: var(--muted); font-size: 0.95rem; max-width: none; }
+
+  .lead__intents { border: 0; padding: 0; margin: 0; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .lead__chip {
+    position: relative;
+    cursor: pointer;
+  }
+  .lead__chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+  .lead__chip span {
+    display: inline-block;
+    padding: 0.5rem 0.95rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-pill);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--muted);
+    transition: all var(--dur-fast) var(--ease-out-quint);
+  }
+  .lead__chip:hover span { border-color: var(--ink-3); color: var(--ink); }
+  .lead__chip input:checked + span {
+    background: var(--green-deep);
+    color: var(--paper-on-ink);
+    border-color: var(--green-deep);
+  }
+  .lead__chip input:focus-visible + span { outline: 2px solid var(--green); outline-offset: 2px; }
+
+  .lead__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+
+  .lead__field { display: flex; flex-direction: column; gap: 0.35rem; }
+  .lead__field label { font-size: 0.82rem; color: var(--muted); font-weight: 500; }
+  .lead__opt { color: var(--muted-2); font-weight: 400; }
+  .lead__field input,
+  .lead__field select,
+  .lead__field textarea {
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    padding: 0.7rem 0.85rem;
+    font-size: 0.95rem;
+    color: var(--ink);
+    transition: border-color var(--dur-fast) var(--ease-out-quint), box-shadow var(--dur-fast) var(--ease-out-quint);
+  }
+  .lead__field textarea { resize: vertical; min-height: 80px; }
+  .lead__field input:focus,
+  .lead__field select:focus,
+  .lead__field textarea:focus {
+    outline: none;
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--green-soft);
+  }
+  .lead__field.has-error input,
+  .lead__field.has-error select,
+  .lead__field.has-error textarea { border-color: oklch(0.55 0.18 25); }
+  .lead__error { color: oklch(0.50 0.18 25); font-size: 0.8rem; min-height: 1em; }
+
+  .lead__submit {
+    margin-top: 0.25rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 0.5rem;
+    background: var(--green-deep);
+    color: var(--paper-on-ink);
+    border: 0;
+    padding: 0.95rem 1.25rem;
+    border-radius: var(--radius-pill);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background var(--dur) var(--ease-out-quint), transform var(--dur) var(--ease-out-quint);
+  }
+  .lead__submit:hover:not([disabled]) { background: var(--green); transform: translateY(-1px); }
+  .lead__submit[disabled] { opacity: 0.7; cursor: progress; }
+  .lead__spinner { display: none; animation: lead-spin 0.9s linear infinite; }
+  .lead[data-state="submitting"] .lead__spinner { display: inline-block; }
+  .lead[data-state="submitting"] .lead__submit-label { opacity: 0.7; }
+  @keyframes lead-spin { to { transform: rotate(360deg); } }
+
+  .lead__legal { font-size: 0.8rem; color: var(--muted-2); }
+  .lead__legal a { color: var(--green-deep); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+
+  .lead__status:empty { display: none; }
+  .lead__status {
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+  .lead__status[data-tone="ok"]    { background: var(--ok-soft); color: oklch(0.30 0.06 150); }
+  .lead__status[data-tone="error"] { background: oklch(0.55 0.18 25 / 0.12); color: oklch(0.40 0.16 25); }
+
+  .lead[data-state="success"] .lead__intents,
+  .lead[data-state="success"] .lead__grid,
+  .lead[data-state="success"] .lead__submit,
+  .lead[data-state="success"] .lead__legal { display: none; }
+  .lead[data-state="success"] { align-items: stretch; }
+
+  @media (max-width: 520px) {
+    .lead__grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  type LeadState = "idle" | "submitting" | "success" | "error";
+
+  const form = document.querySelector<HTMLFormElement>("[data-lead-form]");
+  if (form) {
+    const status = form.querySelector<HTMLElement>("[data-status]")!;
+    const submit = form.querySelector<HTMLButtonElement>("[data-submit]")!;
+    const submitLabel = submit.querySelector<HTMLElement>(".lead__submit-label")!;
+
+    const setStatus = (msg: string, tone: "ok" | "error" | "" = "") => {
+      status.textContent = msg;
+      if (tone) status.setAttribute("data-tone", tone); else status.removeAttribute("data-tone");
+    };
+
+    const clearErrors = () => {
+      form.querySelectorAll<HTMLElement>(".lead__field.has-error").forEach((f) => f.classList.remove("has-error"));
+      form.querySelectorAll<HTMLElement>("[data-error-for]").forEach((e) => (e.textContent = ""));
+    };
+
+    const setFieldError = (name: string, msg: string) => {
+      const wrap = form.querySelector<HTMLElement>(`[name="${name}"]`)?.closest(".lead__field");
+      if (wrap) {
+        wrap.classList.add("has-error");
+        const slot = wrap.querySelector<HTMLElement>("[data-error-for]")!;
+        if (slot) slot.textContent = msg;
+      }
+    };
+
+    const validate = (data: Record<string, string>) => {
+      const errors: Record<string, string> = {};
+      if (!data.name?.trim()) errors.name = "Please enter your name.";
+      if (!data.email?.trim()) errors.email = "Please enter your work email.";
+      else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) errors.email = "That email does not look right.";
+      if (!data.agency?.trim()) errors.agency = "Please enter your agency name.";
+      if (!data.branches) errors.branches = "Please choose a branch count.";
+      return errors;
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearErrors();
+      setStatus("");
+
+      const fd = new FormData(form);
+      const data: Record<string, string> = {};
+      fd.forEach((v, k) => { data[k] = typeof v === "string" ? v : ""; });
+
+      const errors = validate(data);
+      if (Object.keys(errors).length) {
+        for (const [k, v] of Object.entries(errors)) setFieldError(k, v);
+        setStatus("Please correct the highlighted fields.", "error");
+        return;
+      }
+
+      form.setAttribute("data-state", "submitting");
+      submit.disabled = true;
+
+      try {
+        const res = await fetch("/api/lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          if (body?.fieldErrors) {
+            for (const [k, v] of Object.entries<any>(body.fieldErrors)) setFieldError(k, v);
+          }
+          throw new Error(body?.error || "We could not send your request.");
+        }
+        const body = await res.json().catch(() => ({}));
+        form.setAttribute("data-state", "success");
+        const intent = data.intent || "trial";
+        const labels: Record<string, string> = {
+          trial: "Your trial workspace is on the way. Check your inbox in the next few minutes.",
+          demo: "Thanks. A partner from Vellum will be in touch within one working day to schedule a demo.",
+          waitlist: "You are on the waitlist. We will email you the moment early access opens.",
+        };
+        setStatus(labels[intent] || body.message || "Thank you.", "ok");
+      } catch (err: any) {
+        form.removeAttribute("data-state");
+        setStatus(err?.message || "Something went wrong. Please try again.", "error");
+      } finally {
+        submit.disabled = false;
+        submitLabel.textContent = "Send";
+      }
+    });
+  }
+
+  /* Wire the chip radios in the hero / section CTAs to preselect the form intent. */
+  document.querySelectorAll<HTMLElement>("[data-intent]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const intent = el.getAttribute("data-intent");
+      if (!intent) return;
+      const target = document.querySelector<HTMLInputElement>(`#lead input[name="intent"][value="${intent}"]`);
+      if (target) target.checked = true;
+    });
+  });
+</script>

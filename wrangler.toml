@@ -1,0 +1,6 @@
+name = "vellum-landing"
+compatibility_date = "2025-01-15"
+pages_build_output_dir = "./dist"
+
+[vars]
+PLAUSIBLE_DOMAIN = "vellum.example"

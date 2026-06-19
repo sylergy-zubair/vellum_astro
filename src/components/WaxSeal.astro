@@ -1,0 +1,55 @@
+---
+/* Brass wax-seal roundel with forest-black "V". The single place brass is allowed
+   on repeat (logo, favicon, footer mark, key stat figures). */
+interface Props {
+  size?: number;
+  withWordmark?: boolean;
+  ariaLabel?: string;
+}
+const { size = 32, withWordmark = false, ariaLabel = "Vellum" } = Astro.props;
+---
+<a class="seal" href="/" aria-label={ariaLabel}>
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 40 40"
+    role="img"
+    aria-hidden="true"
+  >
+    <defs>
+      <radialGradient id="brass-face" cx="0.35" cy="0.3" r="0.85">
+        <stop offset="0%"  stop-color="oklch(0.85 0.09 80)" />
+        <stop offset="55%" stop-color="oklch(0.72 0.10 80)" />
+        <stop offset="100%" stop-color="oklch(0.55 0.085 75)" />
+      </radialGradient>
+      <radialGradient id="brass-rim" cx="0.5" cy="0.5" r="0.55">
+        <stop offset="92%" stop-color="oklch(0.72 0.10 80 / 0)" />
+        <stop offset="100%" stop-color="oklch(0.40 0.07 70 / 0.55)" />
+      </radialGradient>
+    </defs>
+    <circle cx="20" cy="20" r="19" fill="url(#brass-face)" />
+    <circle cx="20" cy="20" r="19" fill="url(#brass-rim)" />
+    <circle cx="20" cy="20" r="18" fill="none" stroke="oklch(0.40 0.07 70 / 0.35)" stroke-width="0.6" />
+    {/* Stylised V */}
+    <path
+      d="M11.5 12 L20 28 L28.5 12 L25.2 12 L20 22 L14.8 12 Z"
+      fill="oklch(0.18 0.025 158)"
+    />
+  </svg>
+  {withWordmark && <span class="wordmark">Vellum</span>}
+</a>
+
+<style>
+  .seal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--ink);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+  .wordmark { font-weight: 400; }
+  .seal svg { transition: transform var(--dur) var(--ease-out-quint); }
+  .seal:hover svg { transform: rotate(-4deg); }
+</style>

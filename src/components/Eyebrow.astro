@@ -1,0 +1,18 @@
+---
+/* Green uppercase label with a small green dot, per DESIGN.md. */
+interface Props {
+  children: string;
+  tone?: "default" | "ink";
+}
+const { children, tone = "default" } = Astro.props;
+---
+<span class={`eyebrow eyebrow--${tone}`}>{children}</span>
+
+<style>
+  .eyebrow--ink {
+    color: var(--green-bright);
+  }
+  .eyebrow--ink::before {
+    background: var(--green-bright);
+  }
+</style>

@@ -1,0 +1,60 @@
+---
+import WaxSeal from "./WaxSeal.astro";
+import Button from "./Button.astro";
+import { nav } from "~/content/copy";
+---
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="nav" data-nav>
+  <div class="container nav__inner">
+    <WaxSeal withWordmark />
+    <nav aria-label="Primary" class="nav__links">
+      <ul>
+        {nav.links.map((l) => (
+          <li><a href={l.href}>{l.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <div class="nav__cta">
+      <Button href={nav.cta.href} variant="secondary" size="md">{nav.cta.label}</Button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: oklch(0.965 0.006 120 / 0.92);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur) var(--ease-out-quint), background var(--dur) var(--ease-out-quint);
+  }
+  .nav[data-scrolled="true"] {
+    border-bottom-color: var(--line);
+    background: oklch(0.965 0.006 120 / 0.98);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 0.9rem;
+  }
+  .nav__links ul {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+  }
+  .nav__links a {
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color var(--dur-fast) var(--ease-out-quint);
+  }
+  .nav__links a:hover { color: var(--ink); }
+  .nav__cta { display: flex; align-items: center; gap: 0.5rem; }
+
+  @media (max-width: 720px) {
+    .nav__links { display: none; }
+  }
+</style>

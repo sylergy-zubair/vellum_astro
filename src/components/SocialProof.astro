@@ -1,0 +1,88 @@
+---
+import Eyebrow from "./Eyebrow.astro";
+import { socialProof } from "~/content/copy";
+---
+<section class="section social" id="social" aria-labelledby="social-title">
+  <div class="container">
+    <header class="social__head reveal">
+      <Eyebrow>{socialProof.eyebrow}</Eyebrow>
+      <h2 id="social-title">
+        Built <em class="it">{socialProof.titleItalic}</em>{socialProof.titleTail}
+      </h2>
+      <p class="lead">{socialProof.lead}</p>
+    </header>
+
+    {socialProof.isPlaceholder && (
+      <p class="social__placeholder-note reveal" role="note">
+        <span class="dot" aria-hidden="true"></span>
+        Placeholder testimonials shown until customer stories are published.
+      </p>
+    )}
+
+    <ul class="social__grid card-grid">
+      {socialProof.items.map((t, i) => (
+        <li class="social__card reveal" data-delay={i % 3}>
+          <svg class="social__quote" width="28" height="22" viewBox="0 0 28 22" aria-hidden="true">
+            <path
+              d="M0 22 V12 C0 5.4 4.4 1 11 0 L12 4 C8 5 6 7 6 11 H11 V22 Z M16 22 V12 C16 5.4 20.4 1 27 0 L28 4 C24 5 22 7 22 11 H27 V22 Z"
+              fill="currentColor"
+            />
+          </svg>
+          <blockquote class="social__quote-text">
+            <p>{t.quote}</p>
+          </blockquote>
+          <footer class="social__attribution">
+            <span class="social__avatar" aria-hidden="true">{t.initials}</span>
+            <div>
+              <div class="social__name">{t.name}</div>
+              <div class="social__role">{t.role}</div>
+            </div>
+          </footer>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .social__head { max-width: 56ch; margin-bottom: 1.5rem; }
+  .social__head .eyebrow { margin-bottom: 1rem; }
+  .social__head h2 { margin-bottom: 1.1rem; }
+
+  .social__placeholder-note {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    color: var(--brass);
+    font-size: 0.85rem;
+    font-weight: 500;
+    background: var(--brass-soft);
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-pill);
+    margin-bottom: 2.5rem;
+  }
+  .social__placeholder-note .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--brass); }
+
+  .social__card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .social__quote { color: var(--green-soft); }
+  .social__quote-text p { font-size: 1.05rem; color: var(--ink); line-height: 1.5; max-width: none; }
+  .social__attribution { display: flex; align-items: center; gap: 0.85rem; padding-top: 0.75rem; border-top: 1px solid var(--line); margin-top: auto; }
+  .social__avatar {
+    width: 40px; height: 40px;
+    border-radius: 999px;
+    background: var(--green-soft);
+    color: var(--green-deep);
+    display: grid; place-items: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+  }
+  .social__name { font-weight: 600; color: var(--ink); font-size: 0.95rem; }
+  .social__role { color: var(--muted); font-size: 0.85rem; }
+</style>

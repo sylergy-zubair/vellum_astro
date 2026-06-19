@@ -1,0 +1,217 @@
+---
+import Button from "./Button.astro";
+import Eyebrow from "./Eyebrow.astro";
+import { hero } from "~/content/copy";
+const v = hero.visual;
+---
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <div class="hero__eyebrow reveal" data-delay="0">
+        <Eyebrow>{hero.eyebrow}</Eyebrow>
+      </div>
+      <h1 id="hero-title" class="hero__title reveal" data-delay="1">
+        {hero.headline}<em class="it">{hero.headlineItalic}</em>{hero.headlineTail}
+      </h1>
+      <p class="hero__sub lead reveal" data-delay="2">{hero.subhead}</p>
+      <div class="hero__ctas reveal" data-delay="3">
+        <Button href={hero.primaryCta.href} variant="primary" size="lg" intent={hero.primaryIntent}>{hero.primaryCta.label}</Button>
+        <Button href={hero.secondaryCta.href} variant="secondary" size="lg" intent={hero.secondaryIntent}>{hero.secondaryCta.label}</Button>
+      </div>
+      <ul class="hero__meta reveal" data-delay="3" aria-label="Trial details">
+        <li><span class="dot"></span> No credit card</li>
+        <li><span class="dot"></span> 14 days, full access</li>
+        <li><span class="dot"></span> UK data residency</li>
+      </ul>
+    </div>
+
+    {/* Product mock — forest-ink window chrome wrapping client-account reconciliation */}
+    <div class="hero__mock reveal" data-delay="1" aria-hidden="true">
+      <div class="window">
+        <div class="window__chrome">
+          <div class="window__dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="window__title mono">{v.windowTitle}</div>
+          <div class="window__pill">Today</div>
+        </div>
+        <div class="window__body">
+          <div class="window__row window__row--head">
+            <span>Line</span>
+            <span class="num">Amount</span>
+          </div>
+          {v.rows.map((row) => (
+            <div class={`window__row window__row--${row.tone}`}>
+              <span class="label">{row.label}</span>
+              <span class="num mono">{row.amount}</span>
+            </div>
+          ))}
+          <div class="window__foot">
+            <div class="window__status">
+              <span class="status-dot"></span>
+              <span class="mono">Reconciled</span>
+            </div>
+            <div class="window__branch mono">Highgate branch</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating mini-card — applicant match score, the second product figure */}
+      <div class="float-card">
+        <div class="float-card__head">
+          <span class="float-card__eyebrow">Match</span>
+          <span class="float-card__score mono">94</span>
+        </div>
+        <div class="float-card__line">
+          <span class="dot"></span>
+          <span>2-bed flat, Highgate</span>
+        </div>
+        <div class="float-card__line">
+          <span class="dot"></span>
+          <span>A. Shah, registered today</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(2rem, 1rem + 3vw, 4.5rem) clamp(2.5rem, 1rem + 4vw, 5.5rem);
+    position: relative;
+    overflow: clip;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(60% 50% at 80% 0%, var(--green-soft), transparent 60%);
+    pointer-events: none;
+  }
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(2rem, 1rem + 3vw, 4.5rem);
+    align-items: center;
+    position: relative;
+  }
+  .hero__eyebrow { margin-bottom: 1.25rem; }
+  .hero__title { margin-bottom: 1.1rem; }
+  .hero__sub { margin-bottom: 2rem; color: var(--muted); }
+  .hero__ctas {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.75rem;
+  }
+  .hero__meta {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    color: var(--muted-2);
+    font-size: var(--fs-sm);
+  }
+  .hero__meta li { display: inline-flex; align-items: center; gap: 0.45rem; }
+  .hero__meta .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--green); display: inline-block; }
+
+  /* Mock window */
+  .hero__mock { position: relative; }
+  .window {
+    background: var(--ink);
+    color: var(--paper-on-ink);
+    border-radius: 18px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    transform: perspective(1400px) rotateY(-3deg) rotateX(2deg);
+  }
+  .window__chrome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1rem;
+    background: var(--ink-2);
+    border-bottom: 1px solid var(--ink-3);
+  }
+  .window__dots { display: flex; gap: 6px; }
+  .window__dots span {
+    width: 10px; height: 10px; border-radius: 999px;
+    background: oklch(0.40 0.04 158);
+  }
+  .window__dots span:nth-child(1) { background: oklch(0.65 0.15 30 / 0.7); }
+  .window__dots span:nth-child(2) { background: oklch(0.75 0.12 90 / 0.7); }
+  .window__dots span:nth-child(3) { background: oklch(0.65 0.12 150 / 0.7); }
+  .window__title { font-size: 0.78rem; color: var(--muted-on-ink); letter-spacing: 0.04em; }
+  .window__pill {
+    font-size: 0.7rem;
+    color: var(--muted-on-ink);
+    padding: 0.25rem 0.6rem;
+    border: 1px solid var(--line-on-ink);
+    border-radius: var(--radius-pill);
+  }
+  .window__body { padding: 1.1rem 1.25rem 0.5rem; }
+  .window__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line-on-ink);
+    font-size: 0.95rem;
+  }
+  .window__row--head {
+    color: var(--muted-on-ink);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--ink-3);
+  }
+  .window__row--ok {
+    color: var(--ok);
+    font-weight: 600;
+  }
+  .window__row .num { font-size: 0.95rem; }
+  .window__row--ok .num { color: var(--ok); }
+  .window__foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 0 0.25rem;
+  }
+  .window__status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--ok);
+    font-size: 0.85rem;
+  }
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 999px;
+    background: var(--ok);
+    box-shadow: 0 0 0 4px var(--ok-soft);
+  }
+  .window__branch { color: var(--muted-on-ink); font-size: 0.78rem; }
+
+  /* Floating match card */
+  .float-card {
+    position: absolute;
+    left: -1.5rem;
+    bottom: -1.25rem;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.85rem 1rem;
+    box-shadow: var(--shadow-md);
+    min-width: 220px;
+  }
+  .float-card__head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.6rem; }
+  .float-card__eyebrow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; }
+  .float-card__score { font-size: 1.4rem; color: var(--ink); font-weight: 600; }
+  .float-card__line { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--muted); padding: 0.18rem 0; }
+  .float-card__line .dot { width: 5px; height: 5px; border-radius: 999px; background: var(--green); }
+
+  @media (max-width: 900px) {
+    .hero__grid { grid-template-columns: 1fr; }
+    .window { transform: none; }
+    .float-card { left: 0.5rem; bottom: -1rem; }
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+/* Primary / secondary / on-ink variants per DESIGN.md.
+   Primary: --green-deep bg, --paper-on-ink text, weight 600, hover lifts. */
+type Variant = "primary" | "secondary" | "on-ink" | "ghost";
+type Size = "md" | "lg";
+interface Props {
+  href: string;
+  variant?: Variant;
+  size?: Size;
+  type?: "button" | "submit";
+  intent?: "trial" | "demo" | "waitlist";
+  ariaLabel?: string;
+  class?: string;
+}
+const {
+  href,
+  variant = "primary",
+  size = "md",
+  type = "button",
+  intent,
+  ariaLabel,
+  class: extra = "",
+} = Astro.props;
+const isLink = href !== undefined && (href.startsWith("#") || href.startsWith("/"));
+const Tag = href ? "a" : "button";
+---
+<Tag
+  class={`btn btn--${variant} btn--${size} ${extra}`.trim()}
+  href={isLink ? href : undefined}
+  type={!isLink ? type : undefined}
+  data-intent={intent}
+  aria-label={ariaLabel}
+>
+  <slot />
+  {variant === "primary" || variant === "on-ink" ? (
+    <svg class="arrow" width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+      <path d="M2 7 H11 M7 3 L11 7 L7 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  ) : null}
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+      transform var(--dur) var(--ease-out-quint),
+      background var(--dur) var(--ease-out-quint),
+      border-color var(--dur) var(--ease-out-quint),
+      box-shadow var(--dur) var(--ease-out-quint);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn--md { padding: 0.75rem 1.15rem; font-size: 0.95rem; }
+  .btn--lg { padding: 0.95rem 1.5rem; font-size: 1.02rem; }
+
+  .btn--primary {
+    background: var(--green-deep);
+    color: var(--paper-on-ink);
+    box-shadow: 0 1px 0 oklch(0.99 0 0 / 0.15) inset, var(--shadow-sm);
+  }
+  .btn--primary:hover { background: var(--green); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .btn--primary:active { transform: translateY(0); }
+
+  .btn--secondary {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+  }
+  .btn--secondary:hover { border-color: var(--ink-3); background: var(--paper-2); }
+
+  .btn--on-ink {
+    background: var(--green-bright);
+    color: var(--ink);
+  }
+  .btn--on-ink:hover { background: var(--ok); transform: translateY(-1px); }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--paper-on-ink);
+    border: 1px solid var(--line-on-ink);
+  }
+  .btn--ghost:hover { border-color: var(--paper-on-ink); background: oklch(0.99 0 0 / 0.05); }
+
+  .arrow { transition: transform var(--dur) var(--ease-out-quint); }
+  .btn:hover .arrow { transform: translateX(2px); }
+
+  .btn[disabled] { opacity: 0.5; pointer-events: none; }
+</style>

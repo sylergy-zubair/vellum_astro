@@ -1,0 +1,55 @@
+---
+import Eyebrow from "./Eyebrow.astro";
+import { problem } from "~/content/copy";
+import { icons } from "./icons";
+---
+<section class="section section--alt problem" id="problem" aria-labelledby="problem-title">
+  <div class="container">
+    <header class="problem__head reveal">
+      <Eyebrow>{problem.eyebrow}</Eyebrow>
+      <h2 id="problem-title" class="problem__title">
+        {problem.title}<em class="it">{problem.titleItalic}</em>
+      </h2>
+      <p class="lead">{problem.lead}</p>
+    </header>
+
+    <ul class="problem__grid card-grid">
+      {problem.items.map((item, i) => (
+        <li class="problem__card reveal" data-delay={i % 3}>
+          <div class="problem__icon" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d={icons[item.icon]} />
+            </svg>
+          </div>
+          <h3 class="problem__h">{item.title}</h3>
+          <p>{item.body}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .problem__head { max-width: 56ch; margin-bottom: 3rem; }
+  .problem__head .eyebrow { margin-bottom: 1rem; }
+  .problem__title { margin-bottom: 1.1rem; }
+
+  .problem__card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    transition: transform var(--dur) var(--ease-out-quint), box-shadow var(--dur) var(--ease-out-quint);
+  }
+  .problem__card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .problem__icon {
+    width: 44px; height: 44px;
+    border-radius: var(--radius-sm);
+    background: var(--green-soft);
+    color: var(--green);
+    display: grid; place-items: center;
+    margin-bottom: 1.1rem;
+  }
+  .problem__h { font-size: 1.2rem; margin-bottom: 0.5rem; }
+  .problem__card p { color: var(--muted); font-size: 0.98rem; }
+</style>

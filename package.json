@@ -1,0 +1,21 @@
+{
+  "name": "vellum-landing",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check"
+  },
+  "dependencies": {
+    "astro": "^4.16.18",
+    "@astrojs/cloudflare": "^11.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}

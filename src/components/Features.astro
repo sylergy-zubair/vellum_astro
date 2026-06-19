@@ -1,0 +1,292 @@
+---
+import Eyebrow from "./Eyebrow.astro";
+import { features } from "~/content/copy";
+import { icons } from "./icons";
+
+/* Each block alternates figure side. Pre-render figures per block. */
+const figures: Record<string, string> = {
+  unified: "unified",
+  matching: "matching",
+  money: "money",
+  ai: "ai",
+  cloud: "cloud",
+};
+---
+<section class="section features" id="features" aria-labelledby="features-title">
+  <div class="container">
+    <header class="features__head reveal">
+      <Eyebrow>{features.eyebrow}</Eyebrow>
+      <h2 id="features-title">
+        {features.title}<em class="it">{features.titleItalic}</em>
+      </h2>
+      <p class="lead">{features.lead}</p>
+    </header>
+
+    <div class="features__list">
+      {features.items.map((f, i) => {
+        const flip = i % 2 === 1;
+        return (
+          <article class={`feature ${flip ? "feature--flip" : ""} reveal`} data-delay={i % 3}>
+            <div class="feature__copy">
+              <Eyebrow>{f.eyebrow}</Eyebrow>
+              <h3 class="feature__title">
+                {f.title}<em class="it">{f.titleItalic}</em>
+              </h3>
+              <p class="feature__body">{f.body}</p>
+              <ul class="feature__outcomes">
+                {f.outcomes.map((o) => (
+                  <li>
+                    <span class="check" aria-hidden="true">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d={icons.check} />
+                      </svg>
+                    </span>
+                    <span>{o}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="feature__figure" aria-hidden="true">
+              {f.key === "unified" && (
+                <div class="figure figure--graph">
+                  <div class="figure__node figure__node--root">
+                    <span class="dot"></span>
+                    <span>Vendor</span>
+                  </div>
+                  <div class="figure__node figure__node--a">Property</div>
+                  <div class="figure__node figure__node--b">Applicant</div>
+                  <div class="figure__node figure__node--c">Tenancy</div>
+                  <svg class="figure__lines" viewBox="0 0 320 200" preserveAspectRatio="none">
+                    <path d="M160 40 L80 110" />
+                    <path d="M160 40 L240 110" />
+                    <path d="M160 40 L160 170" />
+                  </svg>
+                </div>
+              )}
+              {f.key === "matching" && (
+                <div class="figure figure--match">
+                  <div class="match-row">
+                    <span class="match-row__name">2-bed flat, Highgate</span>
+                    <span class="match-row__bar"><span style="--w:94%"></span></span>
+                    <span class="match-row__score mono">94</span>
+                  </div>
+                  <div class="match-row">
+                    <span class="match-row__name">Studio, Crouch End</span>
+                    <span class="match-row__bar"><span style="--w:82%"></span></span>
+                    <span class="match-row__score mono">82</span>
+                  </div>
+                  <div class="match-row">
+                    <span class="match-row__name">Maisonette, Muswell</span>
+                    <span class="match-row__bar"><span style="--w:71%"></span></span>
+                    <span class="match-row__score mono">71</span>
+                  </div>
+                </div>
+              )}
+              {f.key === "money" && (
+                <div class="figure figure--ledger">
+                  <div class="ledger-row">
+                    <span>Rent received</span><span class="mono">£  8,420.00</span>
+                  </div>
+                  <div class="ledger-row">
+                    <span>Deposit held</span><span class="mono">£  4,950.00</span>
+                  </div>
+                  <div class="ledger-row">
+                    <span>Maintenance</span><span class="mono">£    550.00</span>
+                  </div>
+                  <div class="ledger-row ledger-row--ok">
+                    <span>Reconciled</span><span class="mono">£ 14,820.00</span>
+                  </div>
+                </div>
+              )}
+              {f.key === "ai" && (
+                <div class="figure figure--ai">
+                  <div class="ai-bubble">
+                    <div class="ai-bubble__head">
+                      <span class="ai-dot"></span>
+                      <span class="ai-label">Vellum assistant</span>
+                    </div>
+                    <p>Draft a viewing confirmation for the Highgate flat, Tuesday 4pm, in the agency's standard tone.</p>
+                  </div>
+                  <div class="ai-bubble ai-bubble--reply">
+                    <p>Hi Aisha, confirming your viewing of the two-bed in Highgate on Tuesday at 4pm. The landlord will meet you at the gate. Reply to reschedule at any time.</p>
+                  </div>
+                </div>
+              )}
+              {f.key === "cloud" && (
+                <div class="figure figure--cloud">
+                  <div class="cloud-row">
+                    <span class="cloud-label">Branch sync</span>
+                    <span class="cloud-pill"><span class="dot"></span> Live</span>
+                  </div>
+                  <div class="cloud-row">
+                    <span class="cloud-label">UK region</span>
+                    <span class="cloud-pill"><span class="dot"></span> lon-1</span>
+                  </div>
+                  <div class="cloud-row">
+                    <span class="cloud-label">Last backup</span>
+                    <span class="mono cloud-mono">14:02 UTC</span>
+                  </div>
+                  <div class="cloud-row">
+                    <span class="cloud-label">Auto-updates</span>
+                    <span class="cloud-pill cloud-pill--ok"><span class="dot"></span> On</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style>
+  .features__head { max-width: 56ch; margin-bottom: 4rem; }
+  .features__head .eyebrow { margin-bottom: 1rem; }
+  .features__head h2 { margin-bottom: 1.1rem; }
+
+  .features__list { display: flex; flex-direction: column; gap: clamp(3.5rem, 2rem + 4vw, 6rem); }
+
+  .feature {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 1rem + 3vw, 4.5rem);
+    align-items: center;
+  }
+  .feature--flip .feature__copy { order: 2; }
+  .feature--flip .feature__figure { order: 1; }
+
+  .feature__copy .eyebrow { margin-bottom: 0.9rem; }
+  .feature__title { font-size: clamp(1.5rem, 1.1rem + 1.4vw, 2.1rem); margin-bottom: 0.9rem; }
+  .feature__body { color: var(--muted); margin-bottom: 1.25rem; max-width: 52ch; }
+  .feature__outcomes { display: flex; flex-direction: column; gap: 0.6rem; }
+  .feature__outcomes li { display: flex; gap: 0.65rem; align-items: flex-start; color: var(--ink); font-size: 0.98rem; }
+  .check {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 999px;
+    background: var(--ok-soft);
+    color: var(--ok);
+    display: grid; place-items: center;
+    margin-top: 0.1rem;
+  }
+
+  /* Figure base */
+  .feature__figure { position: relative; }
+  .figure {
+    background: var(--paper-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* Unified graph figure */
+  .figure--graph { position: relative; height: 220px; padding: 1.25rem; }
+  .figure__lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .figure__lines path { stroke: var(--green); stroke-width: 1.2; stroke-dasharray: 4 4; opacity: 0.5; }
+  .figure__node {
+    position: absolute;
+    background: var(--paper);
+    border: 1px solid var(--line-strong);
+    border-radius: 9px;
+    padding: 0.55rem 0.9rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .figure__node--root { top: 18px; left: 50%; transform: translateX(-50%); background: var(--green-deep); color: var(--paper-on-ink); border-color: var(--green-deep); }
+  .figure__node--root .dot { background: var(--paper-on-ink); }
+  .figure__node--a { top: 110px; left: 8%; }
+  .figure__node--b { top: 110px; right: 8%; }
+  .figure__node--c { bottom: 14px; left: 50%; transform: translateX(-50%); }
+  .figure__node .dot { width: 7px; height: 7px; border-radius: 999px; background: var(--green); display: inline-block; }
+
+  /* Match figure */
+  .figure--match { display: flex; flex-direction: column; gap: 0.7rem; }
+  .match-row {
+    display: grid;
+    grid-template-columns: 1.1fr 1.6fr auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.55rem 0.4rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .match-row:last-child { border-bottom: 0; }
+  .match-row__name { font-size: 0.92rem; color: var(--ink); }
+  .match-row__bar {
+    height: 6px;
+    background: var(--paper-3);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .match-row__bar span {
+    display: block;
+    height: 100%;
+    width: var(--w);
+    background: linear-gradient(90deg, var(--green), var(--ok));
+    border-radius: 999px;
+  }
+  .match-row__score { color: var(--green-deep); font-weight: 600; min-width: 2.2ch; text-align: right; }
+
+  /* Ledger figure */
+  .figure--ledger { display: flex; flex-direction: column; gap: 0.4rem; }
+  .ledger-row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.7rem 0.4rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.95rem;
+  }
+  .ledger-row:last-child { border-bottom: 0; }
+  .ledger-row--ok { color: var(--ok); font-weight: 600; }
+  .ledger-row--ok .mono { color: var(--ok); }
+
+  /* AI figure */
+  .figure--ai { display: flex; flex-direction: column; gap: 0.75rem; }
+  .ai-bubble {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 0.9rem 1rem;
+    font-size: 0.92rem;
+  }
+  .ai-bubble p { color: var(--ink); margin: 0; max-width: none; font-size: 0.92rem; line-height: 1.55; }
+  .ai-bubble__head { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .ai-dot { width: 8px; height: 8px; border-radius: 999px; background: var(--green); box-shadow: 0 0 0 3px var(--green-soft); }
+  .ai-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; color: var(--green); }
+  .ai-bubble--reply { background: var(--ink); color: var(--paper-on-ink); border-color: var(--ink); }
+  .ai-bubble--reply p { color: var(--paper-on-ink); }
+
+  /* Cloud figure */
+  .figure--cloud { display: flex; flex-direction: column; gap: 0.5rem; }
+  .cloud-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.6rem 0.4rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.95rem;
+  }
+  .cloud-row:last-child { border-bottom: 0; }
+  .cloud-label { color: var(--muted); }
+  .cloud-pill {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-pill);
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  .cloud-pill .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--green); }
+  .cloud-pill--ok { color: var(--ok); border-color: var(--ok-soft); }
+  .cloud-pill--ok .dot { background: var(--ok); }
+  .cloud-mono { color: var(--ink); font-size: 0.88rem; }
+
+  @media (max-width: 800px) {
+    .feature { grid-template-columns: 1fr; }
+    .feature--flip .feature__copy { order: 1; }
+    .feature--flip .feature__figure { order: 2; }
+  }
+</style>

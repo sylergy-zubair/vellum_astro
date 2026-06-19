@@ -1,0 +1,141 @@
+---
+import Eyebrow from "./Eyebrow.astro";
+import { comparison } from "~/content/copy";
+import { icons } from "./icons";
+---
+<section class="section section--alt comparison" id="compare" aria-labelledby="compare-title">
+  <div class="container">
+    <header class="comparison__head reveal">
+      <Eyebrow>{comparison.eyebrow}</Eyebrow>
+      <h2 id="compare-title">{comparison.title}</h2>
+      <p class="lead">{comparison.lead}</p>
+    </header>
+
+    <div class="comparison__wrap reveal">
+      <table class="comparison__table">
+        <thead>
+          <tr>
+            <th scope="col" class="comparison__corner"><span class="sr-only">Capability</span></th>
+            {comparison.columns.map((col) => (
+              <th
+                scope="col"
+                class={`comparison__col ${col.highlight ? "is-highlight" : ""}`}
+              >
+                <div class="comparison__col-inner">
+                  <span class="comparison__col-name">{col.name}</span>
+                  <span class="comparison__col-tag">{col.tagline}</span>
+                </div>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {comparison.rows.map((row) => (
+            <tr>
+              <th scope="row" class="comparison__row-label">{row.label}</th>
+              {(["legacy", "generic", "vellum"] as const).map((key) => {
+                const v = row[key];
+                return (
+                  <td class={`comparison__cell ${key === "vellum" ? "is-highlight" : ""}`}>
+                    {v === "yes" && (
+                      <span class="mark mark--yes" aria-label="Yes">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d={icons.check} /></svg>
+                      </span>
+                    )}
+                    {v === "no" && (
+                      <span class="mark mark--no" aria-label="No">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d={icons.cross} /></svg>
+                      </span>
+                    )}
+                    {v === "warn" && (
+                      <span class="mark mark--warn" aria-label="Limited">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d={icons.warn} /></svg>
+                      </span>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="comparison__legend reveal">
+      <span class="legend-item"><span class="mark mark--yes"></span> Built for this</span>
+      <span class="legend-item"><span class="mark mark--warn"></span> Partial or paid extra</span>
+      <span class="legend-item"><span class="mark mark--no"></span> Not supported</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .comparison__head { max-width: 56ch; margin-bottom: 3rem; }
+  .comparison__head .eyebrow { margin-bottom: 1rem; }
+  .comparison__head h2 { margin-bottom: 1.1rem; }
+
+  .comparison__wrap {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.5rem;
+    overflow: auto;
+    box-shadow: var(--shadow-sm);
+  }
+  .comparison__table {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  .comparison__table th, .comparison__table td {
+    padding: 1rem 1.1rem;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--line);
+  }
+  .comparison__table thead th { border-bottom: 1px solid var(--line-strong); }
+  .comparison__table tbody tr:last-child th,
+  .comparison__table tbody tr:last-child td { border-bottom: 0; }
+
+  .comparison__corner { width: 32%; }
+  .comparison__col-name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+  .comparison__col-tag { font-size: 0.85rem; color: var(--muted); }
+
+  .comparison__col.is-highlight {
+    background: var(--green-soft);
+    border-top: 2px solid var(--green);
+    border-top-left-radius: var(--radius-sm);
+    border-top-right-radius: var(--radius-sm);
+  }
+  .comparison__cell.is-highlight { background: var(--green-soft); }
+  .comparison__table tbody tr:last-child .comparison__cell.is-highlight { border-bottom-left-radius: var(--radius-sm); border-bottom-right-radius: var(--radius-sm); }
+
+  .comparison__row-label {
+    font-weight: 500;
+    color: var(--ink);
+    font-size: 0.96rem;
+  }
+  .mark {
+    display: inline-grid; place-items: center;
+    width: 26px; height: 26px;
+    border-radius: 999px;
+  }
+  .mark--yes { background: var(--ok-soft); color: var(--ok); }
+  .mark--no  { background: oklch(0.235 0.028 158 / 0.08); color: var(--muted-2); }
+  .mark--warn { background: var(--brass-soft); color: oklch(0.50 0.10 80); }
+
+  .comparison__legend {
+    display: flex; gap: 1.25rem; flex-wrap: wrap;
+    margin-top: 1.5rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+  .legend-item { display: inline-flex; align-items: center; gap: 0.5rem; }
+</style>

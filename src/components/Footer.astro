@@ -1,0 +1,90 @@
+---
+import WaxSeal from "./WaxSeal.astro";
+import { brand, footer } from "~/content/copy";
+const year = new Date().getFullYear();
+---
+<footer class="footer" id="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <WaxSeal size={36} withWordmark />
+      <p class="footer__tagline">{footer.tagline}</p>
+    </div>
+
+    <div class="footer__cols">
+      {footer.columns.map((col) => (
+        <div class="footer__col">
+          <h3 class="footer__h">{col.title}</h3>
+          <ul>
+            {col.links.map((l) => (
+              <li><a href={l.href}>{l.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="footer__contact">
+      <h3 class="footer__h">Contact</h3>
+      <ul>
+        <li><a href={`mailto:${brand.supportEmail}`}>{brand.supportEmail}</a></li>
+        <li><span class="footer__muted">London, United Kingdom</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer__bar">
+    <span class="footer__copy">© {year} {brand.parent}. All rights reserved.</span>
+    <span class="footer__meta">Built in the UK. Vellum is a product of {brand.parent}.</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--paper-2);
+    border-top: 1px solid var(--line);
+    padding-block: clamp(3rem, 1.5rem + 3vw, 4.5rem) 1.5rem;
+  }
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 1.3fr 2fr 1fr;
+    gap: clamp(2rem, 1rem + 2vw, 3.5rem);
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .footer__tagline {
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin-top: 0.85rem;
+    max-width: 36ch;
+  }
+  .footer__cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .footer__h {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    color: var(--green);
+    margin-bottom: 0.9rem;
+  }
+  .footer__col ul, .footer__contact ul { display: flex; flex-direction: column; gap: 0.45rem; }
+  .footer__col a, .footer__contact a {
+    color: var(--ink);
+    font-size: 0.92rem;
+    transition: color var(--dur-fast) var(--ease-out-quint);
+  }
+  .footer__col a:hover, .footer__contact a:hover { color: var(--green-deep); }
+  .footer__muted { color: var(--muted-2); font-size: 0.92rem; }
+
+  .footer__bar {
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    padding-top: 1.5rem;
+    color: var(--muted-2);
+    font-size: 0.82rem;
+  }
+
+  @media (max-width: 800px) {
+    .footer__inner { grid-template-columns: 1fr; }
+    .footer__cols { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>

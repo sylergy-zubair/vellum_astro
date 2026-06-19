@@ -1,0 +1,88 @@
+---
+import Eyebrow from "./Eyebrow.astro";
+import { faq } from "~/content/copy";
+---
+<section class="section faq" id="faq" aria-labelledby="faq-title">
+  <div class="container container--narrow">
+    <header class="faq__head reveal">
+      <Eyebrow>{faq.eyebrow}</Eyebrow>
+      <h2 id="faq-title">
+        {faq.title}<em class="it">{faq.titleItalic}</em>
+      </h2>
+    </header>
+
+    <ul class="faq__list">
+      {faq.items.map((item, i) => (
+        <li class="faq__item reveal" data-delay={i % 3}>
+          <details>
+            <summary>
+              <span class="faq__q">{item.q}</span>
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                  <path d="M3 7 H11" />
+                  <path class="faq__icon-v" d="M7 3 V11" />
+                </svg>
+              </span>
+            </summary>
+            <div class="faq__a">
+              <p>{item.a}</p>
+            </div>
+          </details>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .faq__head { text-align: left; margin-bottom: 2.5rem; }
+  .faq__head .eyebrow { margin-bottom: 1rem; }
+
+  .faq__list { display: flex; flex-direction: column; }
+  .faq__item {
+    border-top: 1px solid var(--line);
+  }
+  .faq__item:last-child { border-bottom: 1px solid var(--line); }
+
+  details { padding: 0; }
+  summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1.4rem 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    color: var(--ink);
+    transition: color var(--dur-fast) var(--ease-out-quint);
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { color: var(--green-deep); }
+  summary:focus-visible { outline-offset: -2px; }
+
+  .faq__icon {
+    width: 30px; height: 30px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    display: grid; place-items: center;
+    color: var(--green);
+    flex-shrink: 0;
+    transition: background var(--dur) var(--ease-out-quint), transform var(--dur) var(--ease-out-quint);
+  }
+  details[open] .faq__icon { background: var(--green-soft); transform: rotate(45deg); }
+
+  .faq__a {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--dur) var(--ease-out-quint);
+  }
+  details[open] .faq__a { grid-template-rows: 1fr; }
+  .faq__a > * { overflow: hidden; }
+  .faq__a p { color: var(--muted); padding: 0 0.25rem 1.4rem; max-width: 62ch; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq__a { transition: none; }
+  }
+</style>

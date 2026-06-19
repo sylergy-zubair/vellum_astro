@@ -1,0 +1,71 @@
+/* DESIGN.md — Chancery design system tokens. All values OKLCH. */
+:root {
+  /* Surfaces — cool bone / stone (NOT warm cream) */
+  --paper:        oklch(0.965 0.006 120);
+  --paper-2:      oklch(0.940 0.008 124);
+  --paper-3:      oklch(0.908 0.010 126);
+
+  /* Ink — forest-black */
+  --ink:          oklch(0.235 0.028 158);
+  --ink-2:        oklch(0.300 0.030 158);
+  --ink-3:        oklch(0.375 0.030 158);
+  --muted:        oklch(0.450 0.022 158);
+  --muted-2:      oklch(0.560 0.016 150);
+
+  /* Chancery green */
+  --green:        oklch(0.430 0.072 158);
+  --green-deep:   oklch(0.360 0.062 158);
+  --green-soft:   oklch(0.430 0.072 158 / 0.10);
+  --green-bright: oklch(0.560 0.110 158); /* brightened for CTAs on dark */
+
+  /* Confirmation green */
+  --ok:           oklch(0.560 0.095 150);
+  --ok-soft:      oklch(0.560 0.095 150 / 0.16);
+
+  /* Brass — premium micro-accent */
+  --brass:        oklch(0.720 0.100 80);
+  --brass-soft:   oklch(0.720 0.100 80 / 0.14);
+
+  /* Lines */
+  --line:         oklch(0.235 0.028 158 / 0.12);
+  --line-strong:  oklch(0.235 0.028 158 / 0.20);
+  --line-on-ink:  oklch(0.965 0.01 120 / 0.14);
+
+  /* On-ink text */
+  --paper-on-ink: oklch(0.955 0.012 110);
+  --muted-on-ink: oklch(0.790 0.014 120);
+
+  /* Typography */
+  --font-display: "Libre Caslon Display", Georgia, "Times New Roman", serif;
+  --font-italic:  "Libre Caslon Text", Georgia, serif;
+  --font-sans:    "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:    "Spline Sans Mono", ui-monospace, "Cascadia Code", monospace;
+
+  /* Type scale (fluid, ratio >= 1.25) */
+  --fs-display:   clamp(2.7rem, 1.6rem + 5.0vw, 5.1rem);
+  --fs-h2:        clamp(1.95rem, 1.3rem + 2.6vw, 3.05rem);
+  --fs-h3:        clamp(1.3rem, 1.05rem + 0.9vw, 1.6rem);
+  --fs-lead:      clamp(1.12rem, 1.0rem + 0.5vw, 1.32rem);
+  --fs-body:      1.0625rem;
+  --fs-sm:        0.9375rem;
+  --fs-xs:        0.8125rem;
+
+  /* Spacing */
+  --space-section: clamp(4.5rem, 3rem + 7vw, 8.5rem);
+  --container:     78rem;
+  --container-narrow: 46rem;
+  --radius:        14px;
+  --radius-sm:     9px;
+  --radius-pill:   999px;
+
+  /* Elevation — green-tinted, no glassmorphism */
+  --shadow-sm: 0 1px 2px oklch(0.235 0.028 158 / 0.06), 0 2px 6px oklch(0.235 0.028 158 / 0.05);
+  --shadow-md: 0 6px 16px oklch(0.235 0.028 158 / 0.08), 0 2px 6px oklch(0.235 0.028 158 / 0.05);
+  --shadow-lg: 0 24px 50px oklch(0.235 0.028 158 / 0.18), 0 8px 18px oklch(0.235 0.028 158 / 0.09);
+
+  /* Motion */
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 180ms;
+  --dur:      320ms;
+  --dur-slow: 560ms;
+}
