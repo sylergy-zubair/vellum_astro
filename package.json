@@ -10,7 +10,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "deploy:pages": "wrangler pages deploy dist --project-name vellum-landing --commit-dirty=true"
+    "deploy:pages": "wrangler pages deploy dist --project-name vellum-astro --commit-dirty=true"
   },
   "dependencies": {
     "astro": "^4.16.18",

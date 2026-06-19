@@ -35,7 +35,7 @@ The Worker endpoint at `src/pages/api/lead.ts` is wired through the `@astrojs/cl
 
 ```bash
 npm run build
-npm run deploy:pages   # = wrangler pages deploy dist --project-name vellum-landing
+npm run deploy:pages   # = wrangler pages deploy dist --project-name vellum-astro
 ```
 
 ## Architecture
