@@ -56,22 +56,14 @@ a:hover { color: var(--green-deep); }
 .section--ink p  { color: var(--muted-on-ink); }
 .section--ink em { color: var(--green-bright); }
 
+/* Eyebrow/labels. Uppercase, --fs-xs, ls 0.08em, green. */
 .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: inline-block;
   font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--green);
-}
-.eyebrow::before {
-  content: "";
-  width: 6px; height: 6px;
-  border-radius: 999px;
-  background: var(--green);
-  display: inline-block;
 }
 
 .lead { font-size: var(--fs-lead); color: var(--muted); max-width: 62ch; }

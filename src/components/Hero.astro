@@ -7,21 +7,22 @@ const v = hero.visual;
 const heroPhotoUrl = unsplashUrl(photos.heroBg.id, 1400, 78);
 ---
 <section class="hero" id="top" aria-labelledby="hero-title">
-  <div class="container hero__grid">
-    {/* Photographic backdrop behind the headline. Bleeds left,
-        fades to paper on the right so the text reads cleanly. */}
-    <div class="hero__photo" aria-hidden="true">
-      <img
-        src={heroPhotoUrl}
-        alt=""
-        width="1400"
-        height="900"
-        loading="eager"
-        decoding="async"
-        fetchpriority="high"
-      />
-    </div>
+  {/* Photographic backdrop — full-bleed across the viewport, sits
+      behind the grid. Lives as a sibling of .container so it isn't
+      constrained by the max-width. */}
+  <div class="hero__photo" aria-hidden="true">
+    <img
+      src={heroPhotoUrl}
+      alt=""
+      width="1800"
+      height="1100"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+    />
+  </div>
 
+  <div class="container hero__grid">
     <div class="hero__copy">
       <div class="hero__eyebrow reveal" data-delay="0">
         <Eyebrow>{hero.eyebrow}</Eyebrow>
