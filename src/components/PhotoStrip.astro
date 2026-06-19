@@ -1,0 +1,80 @@
+---
+/* Full-bleed photographic strip. Sits between Trust and Comparison.
+   Forest-ink panel with a duotone-tinted UK rooftops photo behind,
+   one italic-Caslon caption in pale brass on top. */
+
+import { photos, unsplashUrl } from "~/content/imagery";
+const strip = photos.stripRooftops;
+const stripUrl = unsplashUrl(strip.id, 1800, 75);
+---
+<section class="strip" aria-labelledby="strip-caption">
+  <div class="strip__photo" aria-hidden="true">
+    <img
+      src={stripUrl}
+      alt=""
+      width="1800"
+      height="900"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <div class="container">
+    <p id="strip-caption" class="strip__caption">
+      Built for the agencies <em>that actually run the street</em>.
+    </p>
+  </div>
+</section>
+
+<style>
+  .strip {
+    position: relative;
+    background: var(--ink);
+    color: var(--paper-on-ink);
+    padding-block: clamp(4.5rem, 3rem + 6vw, 8rem);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .strip__photo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--ink);
+  }
+  .strip__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* Duotone into ink-wash — same hue rotation as paper panels,
+       but heavily darkened and used with screen blend for the
+       moody near-monochrome ink effect. */
+    filter: grayscale(1) contrast(1.1) brightness(0.55)
+            sepia(1) hue-rotate(82deg) saturate(0.5);
+    mix-blend-mode: screen;
+    opacity: 0.28;
+  }
+  /* Vignette overlay so the caption reads cleanly */
+  .strip::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(70% 60% at 50% 50%, transparent 0%, oklch(0.235 0.028 158 / 0.55) 100%);
+    pointer-events: none;
+  }
+  .strip__caption {
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 1.2rem + 1.6vw, 2.6rem);
+    line-height: 1.18;
+    color: var(--paper-on-ink);
+    max-width: 22ch;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .strip__caption em {
+    font-family: var(--font-italic);
+    font-style: italic;
+    color: oklch(0.78 0.085 80); /* brightened brass for ink panels */
+  }
+</style>

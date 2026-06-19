@@ -2,15 +2,10 @@
 import Eyebrow from "./Eyebrow.astro";
 import { features } from "~/content/copy";
 import { icons } from "./icons";
+import { photos, unsplashUrl } from "~/content/imagery";
 
-/* Each block alternates figure side. Pre-render figures per block. */
-const figures: Record<string, string> = {
-  unified: "unified",
-  matching: "matching",
-  money: "money",
-  ai: "ai",
-  cloud: "cloud",
-};
+const unifiedPhoto = unsplashUrl(photos.featureUnified.id, 1200, 75);
+const cloudPhoto = unsplashUrl(photos.featureCloud.id, 1200, 75);
 ---
 <section class="section features" id="features" aria-labelledby="features-title">
   <div class="container">
@@ -49,7 +44,10 @@ const figures: Record<string, string> = {
 
             <div class="feature__figure" aria-hidden="true">
               {f.key === "unified" && (
-                <div class="figure figure--graph">
+                <div class="figure figure--graph figure--has-photo">
+                  <div class="figure__photo" aria-hidden="true">
+                    <img src={unifiedPhoto} alt="" width="1200" height="800" loading="lazy" decoding="async" />
+                  </div>
                   <div class="figure__node figure__node--root">
                     <span class="dot"></span>
                     <span>Vendor</span>
@@ -114,7 +112,10 @@ const figures: Record<string, string> = {
                 </div>
               )}
               {f.key === "cloud" && (
-                <div class="figure figure--cloud">
+                <div class="figure figure--cloud figure--has-photo">
+                  <div class="figure__photo" aria-hidden="true">
+                    <img src={cloudPhoto} alt="" width="1200" height="800" loading="lazy" decoding="async" />
+                  </div>
                   <div class="cloud-row">
                     <span class="cloud-label">Branch sync</span>
                     <span class="cloud-pill"><span class="dot"></span> Live</span>
@@ -180,10 +181,43 @@ const figures: Record<string, string> = {
     border-radius: var(--radius);
     padding: 1.5rem;
     box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
   }
+
+  /* Photographic backdrop. Sits behind figure content, duotone-tinted
+     into Chancery green via CSS filters so the photo lives in the
+     palette, not on top of it. */
+  .figure__photo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-color: var(--paper-2);
+  }
+  .figure__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(1) contrast(1.05) brightness(0.92)
+            sepia(1) hue-rotate(82deg) saturate(0.5);
+    mix-blend-mode: multiply;
+    opacity: 0.85;
+  }
+  /* When a figure has a photo, lift foreground content above it
+     and add a soft top-to-bottom gradient so the photo doesn't
+     fight the text. */
+  .figure--has-photo {
+    background: linear-gradient(180deg, var(--paper) 0%, oklch(from var(--paper-2) l c h / 0.85) 100%);
+  }
+  .figure--has-photo > *:not(.figure__photo) { position: relative; z-index: 1; }
 
   /* Unified graph figure */
   .figure--graph { position: relative; height: 220px; padding: 1.25rem; }
+  /* When the graph has a photo, push nodes onto a translucent paper
+     plate so the photo doesn't compete with the text. */
+  .figure--graph.figure--has-photo .figure__node { background: oklch(from var(--paper) l c h / 0.92); backdrop-filter: none; }
+  .figure--graph.figure--has-photo .figure__lines path { opacity: 0.7; }
   .figure__lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
   .figure__lines path { stroke: var(--green); stroke-width: 1.2; stroke-dasharray: 4 4; opacity: 0.5; }
   .figure__node {
@@ -263,6 +297,13 @@ const figures: Record<string, string> = {
 
   /* Cloud figure */
   .figure--cloud { display: flex; flex-direction: column; gap: 0.5rem; }
+  .figure--cloud.figure--has-photo .cloud-row {
+    background: oklch(from var(--paper) l c h / 0.88);
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 0.75rem;
+    border-bottom: 0;
+    margin: 0 -0.4rem;
+  }
   .cloud-row {
     display: flex; align-items: center; justify-content: space-between;
     padding: 0.6rem 0.4rem;

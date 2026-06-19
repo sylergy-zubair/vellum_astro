@@ -2,7 +2,9 @@
 import Button from "./Button.astro";
 import Eyebrow from "./Eyebrow.astro";
 import { hero } from "~/content/copy";
+import { photos, unsplashUrl } from "~/content/imagery";
 const v = hero.visual;
+const heroPhotoUrl = unsplashUrl(photos.heroBg.id, 1400, 78);
 ---
 <section class="hero" id="top" aria-labelledby="hero-title">
   <div class="container hero__grid">
@@ -26,7 +28,18 @@ const v = hero.visual;
     </div>
 
     {/* Product mock — forest-ink window chrome wrapping client-account reconciliation */}
-    <div class="hero__mock reveal" data-delay="1" aria-hidden="true">
+    <div class="hero__mock reveal" data-delay="1">
+      <div class="hero__photo" aria-hidden="true">
+        <img
+          src={heroPhotoUrl}
+          alt=""
+          width="1400"
+          height="900"
+          loading="eager"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </div>
       <div class="window">
         <div class="window__chrome">
           <div class="window__dots">
@@ -116,7 +129,34 @@ const v = hero.visual;
 
   /* Mock window */
   .hero__mock { position: relative; }
+
+  /* Photographic context panel behind the product mock.
+     Duotone-tinted into Chancery green via CSS filters, faded
+     toward the right edge so the mock stays the primary visual. */
+  .hero__photo {
+    position: absolute;
+    inset: -3% -4% -8% -8%;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: 22px;
+    /* Fallback paper colour if the photo fails to load */
+    background-color: var(--paper-2);
+    -webkit-mask-image: linear-gradient(to right, #000 0%, #000 55%, transparent 100%);
+    mask-image: linear-gradient(to right, #000 0%, #000 55%, transparent 100%);
+  }
+  .hero__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(1) contrast(1.05) brightness(0.95)
+            sepia(1) hue-rotate(82deg) saturate(0.55);
+    mix-blend-mode: multiply;
+    opacity: 0.9;
+  }
   .window {
+    position: relative;
+    z-index: 1;
     background: var(--ink);
     color: var(--paper-on-ink);
     border-radius: 18px;
@@ -213,5 +253,9 @@ const v = hero.visual;
     .hero__grid { grid-template-columns: 1fr; }
     .window { transform: none; }
     .float-card { left: 0.5rem; bottom: -1rem; }
+    .hero__photo { inset: -3% -3% -8% -3%; }
+  }
+  @media (max-width: 560px) {
+    .hero__photo { display: none; }
   }
 </style>
