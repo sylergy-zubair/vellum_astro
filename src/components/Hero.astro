@@ -8,6 +8,20 @@ const heroPhotoUrl = unsplashUrl(photos.heroBg.id, 1400, 78);
 ---
 <section class="hero" id="top" aria-labelledby="hero-title">
   <div class="container hero__grid">
+    {/* Photographic backdrop behind the headline. Bleeds left,
+        fades to paper on the right so the text reads cleanly. */}
+    <div class="hero__photo" aria-hidden="true">
+      <img
+        src={heroPhotoUrl}
+        alt=""
+        width="1400"
+        height="900"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </div>
+
     <div class="hero__copy">
       <div class="hero__eyebrow reveal" data-delay="0">
         <Eyebrow>{hero.eyebrow}</Eyebrow>
@@ -27,61 +41,74 @@ const heroPhotoUrl = unsplashUrl(photos.heroBg.id, 1400, 78);
       </ul>
     </div>
 
-    {/* Product mock — forest-ink window chrome wrapping client-account reconciliation */}
-    <div class="hero__mock reveal" data-delay="1">
-      <div class="hero__photo" aria-hidden="true">
-        <img
-          src={heroPhotoUrl}
-          alt=""
-          width="1400"
-          height="900"
-          loading="eager"
-          decoding="async"
-          fetchpriority="high"
-        />
-      </div>
-      <div class="window">
-        <div class="window__chrome">
-          <div class="window__dots">
-            <span></span><span></span><span></span>
-          </div>
-          <div class="window__title mono">{v.windowTitle}</div>
-          <div class="window__pill">Today</div>
+    {/* Estate agency dashboard mock. Forest-ink chrome wrapping
+        sidebar nav, KPI tiles, instructions chart, and a live feed. */}
+    <div class="hero__mock reveal" data-delay="1" aria-hidden="true">
+      <div class="dash">
+        <div class="dash__chrome">
+          <div class="dash__dots"><span></span><span></span><span></span></div>
+          <div class="dash__brand">{v.brand} <span class="dash__sep">/</span> {v.page}</div>
+          <div class="dash__range mono">{v.range}</div>
         </div>
-        <div class="window__body">
-          <div class="window__row window__row--head">
-            <span>Line</span>
-            <span class="num">Amount</span>
-          </div>
-          {v.rows.map((row) => (
-            <div class={`window__row window__row--${row.tone}`}>
-              <span class="label">{row.label}</span>
-              <span class="num mono">{row.amount}</span>
-            </div>
-          ))}
-          <div class="window__foot">
-            <div class="window__status">
-              <span class="status-dot"></span>
-              <span class="mono">Reconciled</span>
-            </div>
-            <div class="window__branch mono">Highgate branch</div>
-          </div>
-        </div>
-      </div>
 
-      {/* Floating mini-card — applicant match score, the second product figure */}
-      <div class="float-card">
-        <div class="float-card__head">
-          <span class="float-card__eyebrow">Match</span>
-          <span class="float-card__score mono">94</span>
-        </div>
-        <div class="float-card__line">
-          <span class="dot"></span>
-          <span>2-bed flat, Highgate</span>
-        </div>
-        <div class="float-card__line">
-          <span class="dot"></span>
-          <span>A. Shah, registered today</span>
+        <div class="dash__body">
+          <aside class="dash__nav">
+            <ul>
+              {v.nav.map((n) => (
+                <li class={n.active ? "is-active" : ""}>
+                  <span class="dash__nav-dot" aria-hidden="true"></span>
+                  {n.label}
+                </li>
+              ))}
+            </ul>
+          </aside>
+
+          <main class="dash__main">
+            <div class="dash__kpis">
+              {v.kpis.map((k) => (
+                <div class={`dash__kpi dash__kpi--${k.tone}`}>
+                  <div class="dash__kpi-label">{k.label}</div>
+                  <div class="dash__kpi-value mono">{k.value}</div>
+                  <div class="dash__kpi-delta mono">{k.delta}</div>
+                </div>
+              ))}
+            </div>
+
+            <section class="dash__chart">
+              <header class="dash__chart-head">
+                <div>
+                  <div class="dash__chart-title">{v.chart.title}</div>
+                  <div class="dash__chart-sub">{v.chart.unit}</div>
+                </div>
+                <div class="dash__chart-pill mono">+34% YoY</div>
+              </header>
+              <div class="dash__bars">
+                {v.chart.bars.map((b) => (
+                  <div class="dash__bar" style={`--h: ${b.h}%`}>
+                    <span class="dash__bar-tip mono">{b.h}</span>
+                    <span class="dash__bar-fill"></span>
+                    <span class="dash__bar-x">{b.m}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section class="dash__feed">
+              <div class="dash__feed-head">
+                <span class="dash__feed-title">Live activity</span>
+                <span class="dash__feed-dot" aria-hidden="true"></span>
+              </div>
+              <ul class="dash__feed-list">
+                {v.feed.map((f) => (
+                  <li>
+                    <span class={`dash__feed-mark dash__feed-mark--${f.tone}`} aria-hidden="true"></span>
+                    <span class="dash__feed-text">{f.text}</span>
+                    <span class="dash__feed-meta mono">{f.meta}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          </main>
         </div>
       </div>
     </div>
@@ -98,16 +125,57 @@ const heroPhotoUrl = unsplashUrl(photos.heroBg.id, 1400, 78);
     content: "";
     position: absolute;
     inset: 0;
-    background: radial-gradient(60% 50% at 80% 0%, var(--green-soft), transparent 60%);
+    background:
+      radial-gradient(60% 60% at 18% 35%, var(--green-soft), transparent 65%),
+      radial-gradient(40% 50% at 95% 0%, oklch(0.560 0.095 150 / 0.06), transparent 60%);
     pointer-events: none;
   }
   .hero__grid {
     display: grid;
-    grid-template-columns: 1.05fr 1fr;
+    grid-template-columns: 1fr 1.05fr;
     gap: clamp(2rem, 1rem + 3vw, 4.5rem);
     align-items: center;
     position: relative;
   }
+
+  /* Photographic backdrop. Sits behind the LEFT column (the text),
+     bleeds slightly off-canvas to the left, fades to paper on the
+     right edge so the headline and CTAs sit on tinted paper. */
+  .hero__photo {
+    position: absolute;
+    inset: clamp(-2rem, -1rem + 0vw, 0rem) clamp(0rem, 0rem + 4vw, 5rem)
+           clamp(-3rem, -2rem + 0vw, 0rem) clamp(-3rem, -2rem + 0vw, 0rem);
+    z-index: 0;
+    overflow: hidden;
+    border-radius: 24px;
+    background-color: var(--paper-2);
+    -webkit-mask-image:
+      linear-gradient(to right,
+        #000 0%, #000 45%,
+        oklch(0 0 0 / 0.85) 60%,
+        oklch(0 0 0 / 0.4) 78%,
+        transparent 100%);
+    mask-image:
+      linear-gradient(to right,
+        #000 0%, #000 45%,
+        oklch(0 0 0 / 0.85) 60%,
+        oklch(0 0 0 / 0.4) 78%,
+        transparent 100%);
+  }
+  .hero__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(1) contrast(1.05) brightness(0.95)
+            sepia(1) hue-rotate(82deg) saturate(0.55);
+    mix-blend-mode: multiply;
+    opacity: 0.88;
+  }
+
+  /* Make sure the copy sits above the photo */
+  .hero__copy { position: relative; z-index: 1; }
+
   .hero__eyebrow { margin-bottom: 1.25rem; }
   .hero__title { margin-bottom: 1.1rem; }
   .hero__sub { margin-bottom: 2rem; color: var(--muted); }
@@ -127,133 +195,250 @@ const heroPhotoUrl = unsplashUrl(photos.heroBg.id, 1400, 78);
   .hero__meta li { display: inline-flex; align-items: center; gap: 0.45rem; }
   .hero__meta .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--green); display: inline-block; }
 
-  /* Mock window */
-  .hero__mock { position: relative; }
-
-  /* Photographic context panel behind the product mock.
-     Duotone-tinted into Chancery green via CSS filters, faded
-     toward the right edge so the mock stays the primary visual. */
-  .hero__photo {
-    position: absolute;
-    inset: -3% -4% -8% -8%;
-    z-index: 0;
-    overflow: hidden;
-    border-radius: 22px;
-    /* Fallback paper colour if the photo fails to load */
-    background-color: var(--paper-2);
-    -webkit-mask-image: linear-gradient(to right, #000 0%, #000 55%, transparent 100%);
-    mask-image: linear-gradient(to right, #000 0%, #000 55%, transparent 100%);
-  }
-  .hero__photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: grayscale(1) contrast(1.05) brightness(0.95)
-            sepia(1) hue-rotate(82deg) saturate(0.55);
-    mix-blend-mode: multiply;
-    opacity: 0.9;
-  }
-  .window {
+  /* Dashboard mock */
+  .hero__mock {
     position: relative;
     z-index: 1;
+    transform: perspective(1800px) rotateY(-3deg) rotateX(1.5deg);
+    transform-origin: center;
+  }
+  .dash {
     background: var(--ink);
     color: var(--paper-on-ink);
     border-radius: 18px;
     box-shadow: var(--shadow-lg);
     overflow: hidden;
-    transform: perspective(1400px) rotateY(-3deg) rotateX(2deg);
+    border: 1px solid var(--ink-3);
   }
-  .window__chrome {
+  .dash__chrome {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.85rem 1rem;
+    padding: 0.7rem 0.95rem;
     background: var(--ink-2);
     border-bottom: 1px solid var(--ink-3);
   }
-  .window__dots { display: flex; gap: 6px; }
-  .window__dots span {
-    width: 10px; height: 10px; border-radius: 999px;
-    background: oklch(0.40 0.04 158);
+  .dash__dots { display: flex; gap: 6px; }
+  .dash__dots span { width: 9px; height: 9px; border-radius: 999px; background: oklch(0.40 0.04 158); }
+  .dash__dots span:nth-child(1) { background: oklch(0.65 0.15 30 / 0.7); }
+  .dash__dots span:nth-child(2) { background: oklch(0.75 0.12 90 / 0.7); }
+  .dash__dots span:nth-child(3) { background: oklch(0.65 0.12 150 / 0.7); }
+  .dash__brand {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    color: var(--paper-on-ink);
+    letter-spacing: -0.005em;
   }
-  .window__dots span:nth-child(1) { background: oklch(0.65 0.15 30 / 0.7); }
-  .window__dots span:nth-child(2) { background: oklch(0.75 0.12 90 / 0.7); }
-  .window__dots span:nth-child(3) { background: oklch(0.65 0.12 150 / 0.7); }
-  .window__title { font-size: 0.78rem; color: var(--muted-on-ink); letter-spacing: 0.04em; }
-  .window__pill {
+  .dash__sep { color: var(--muted-on-ink); margin-inline: 0.4rem; opacity: 0.5; }
+  .dash__range {
     font-size: 0.7rem;
     color: var(--muted-on-ink);
-    padding: 0.25rem 0.6rem;
+    padding: 0.22rem 0.55rem;
     border: 1px solid var(--line-on-ink);
     border-radius: var(--radius-pill);
   }
-  .window__body { padding: 1.1rem 1.25rem 0.5rem; }
-  .window__row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid var(--line-on-ink);
-    font-size: 0.95rem;
+
+  /* Dashboard body: sidebar + main */
+  .dash__body {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    min-height: 380px;
   }
-  .window__row--head {
+
+  /* Sidebar nav */
+  .dash__nav { padding: 1rem 0.6rem; border-right: 1px solid var(--ink-3); background: var(--ink); }
+  .dash__nav ul { display: flex; flex-direction: column; gap: 0.15rem; }
+  .dash__nav li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.78rem;
     color: var(--muted-on-ink);
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    border-bottom: 1px solid var(--ink-3);
+    border-radius: var(--radius-sm);
+    cursor: default;
   }
-  .window__row--ok {
-    color: var(--ok);
-    font-weight: 600;
+  .dash__nav li.is-active {
+    background: var(--green-deep);
+    color: var(--paper-on-ink);
   }
-  .window__row .num { font-size: 0.95rem; }
-  .window__row--ok .num { color: var(--ok); }
-  .window__foot {
+  .dash__nav-dot {
+    width: 5px; height: 5px;
+    border-radius: 999px;
+    background: var(--muted-on-ink);
+    opacity: 0.5;
+  }
+  .dash__nav li.is-active .dash__nav-dot {
+    background: var(--paper-on-ink);
+    opacity: 1;
+  }
+
+  /* Main content area */
+  .dash__main {
+    padding: 1rem 1.1rem 1.1rem;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.85rem 0 0.25rem;
+    flex-direction: column;
+    gap: 0.9rem;
+    background:
+      radial-gradient(60% 50% at 100% 0%, var(--green-soft), transparent 70%);
+    background-color: var(--ink);
   }
-  .window__status {
-    display: inline-flex;
-    align-items: center;
+
+  /* KPI tiles */
+  .dash__kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 0.5rem;
-    color: var(--ok);
-    font-size: 0.85rem;
   }
-  .status-dot {
-    width: 8px; height: 8px;
+  .dash__kpi {
+    padding: 0.7rem 0.75rem;
+    background: var(--ink-2);
+    border: 1px solid var(--ink-3);
+    border-radius: var(--radius-sm);
+  }
+  .dash__kpi-label {
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted-on-ink);
+    margin-bottom: 0.4rem;
+  }
+  .dash__kpi-value {
+    font-size: 1.35rem;
+    color: var(--paper-on-ink);
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .dash__kpi-delta {
+    font-size: 0.68rem;
+    color: var(--muted-on-ink);
+  }
+  .dash__kpi--ok .dash__kpi-delta { color: var(--ok); }
+
+  /* Chart */
+  .dash__chart {
+    background: var(--ink-2);
+    border: 1px solid var(--ink-3);
+    border-radius: var(--radius-sm);
+    padding: 0.8rem 0.95rem 0.95rem;
+  }
+  .dash__chart-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+  }
+  .dash__chart-title { font-size: 0.82rem; color: var(--paper-on-ink); margin-bottom: 0.15rem; }
+  .dash__chart-sub { font-size: 0.7rem; color: var(--muted-on-ink); }
+  .dash__chart-pill {
+    font-size: 0.7rem;
+    color: var(--ok);
+    padding: 0.18rem 0.5rem;
+    border: 1px solid var(--ok-soft);
+    border-radius: var(--radius-pill);
+  }
+  .dash__bars {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: end;
+    gap: 0.32rem;
+    height: 92px;
+  }
+  .dash__bar {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .dash__bar-fill {
+    display: block;
+    width: 100%;
+    height: var(--h);
+    background: linear-gradient(180deg, var(--ok) 0%, var(--green) 100%);
+    border-radius: 3px 3px 0 0;
+    opacity: 0.95;
+  }
+  .dash__bar:nth-child(12) .dash__bar-fill {
+    background: linear-gradient(180deg, oklch(0.72 0.10 80) 0%, var(--ok) 100%);
+    box-shadow: 0 0 0 1px oklch(0.72 0.10 80 / 0.4);
+  }
+  .dash__bar-tip {
+    position: absolute;
+    top: -16px;
+    font-size: 0.62rem;
+    color: var(--ok);
+    opacity: 0;
+    transition: opacity var(--dur-fast) var(--ease-out-quint);
+  }
+  .dash__bar:hover .dash__bar-tip { opacity: 1; }
+  .dash__bar-x {
+    position: absolute;
+    bottom: -16px;
+    font-size: 0.62rem;
+    color: var(--muted-on-ink);
+    font-family: var(--font-mono);
+  }
+
+  /* Live activity feed */
+  .dash__feed {
+    background: var(--ink-2);
+    border: 1px solid var(--ink-3);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 0.9rem 0.9rem;
+  }
+  .dash__feed-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.55rem;
+  }
+  .dash__feed-title { font-size: 0.78rem; color: var(--paper-on-ink); }
+  .dash__feed-dot {
+    width: 7px; height: 7px;
     border-radius: 999px;
     background: var(--ok);
-    box-shadow: 0 0 0 4px var(--ok-soft);
+    box-shadow: 0 0 0 3px var(--ok-soft);
+    animation: pulse 2s ease-in-out infinite;
   }
-  .window__branch { color: var(--muted-on-ink); font-size: 0.78rem; }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 3px var(--ok-soft); }
+    50%      { box-shadow: 0 0 0 5px var(--ok-soft); }
+  }
+  .dash__feed-list { display: flex; flex-direction: column; gap: 0.35rem; }
+  .dash__feed-list li {
+    display: grid;
+    grid-template-columns: 10px 1fr auto;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.3rem 0;
+    font-size: 0.74rem;
+    color: var(--muted-on-ink);
+  }
+  .dash__feed-text { color: var(--paper-on-ink); }
+  .dash__feed-meta { font-size: 0.66rem; color: var(--muted-on-ink); }
+  .dash__feed-mark {
+    width: 8px; height: 8px;
+    border-radius: 999px;
+    background: var(--muted-on-ink);
+  }
+  .dash__feed-mark--ok    { background: var(--ok); }
+  .dash__feed-mark--brass { background: oklch(0.72 0.10 80); }
 
-  /* Floating match card */
-  .float-card {
-    position: absolute;
-    left: -1.5rem;
-    bottom: -1.25rem;
-    background: var(--paper);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 0.85rem 1rem;
-    box-shadow: var(--shadow-md);
-    min-width: 220px;
+  @media (prefers-reduced-motion: reduce) {
+    .dash__feed-dot { animation: none; }
   }
-  .float-card__head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.6rem; }
-  .float-card__eyebrow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--green); font-weight: 600; }
-  .float-card__score { font-size: 1.4rem; color: var(--ink); font-weight: 600; }
-  .float-card__line { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--muted); padding: 0.18rem 0; }
-  .float-card__line .dot { width: 5px; height: 5px; border-radius: 999px; background: var(--green); }
 
   @media (max-width: 900px) {
-    .hero__grid { grid-template-columns: 1fr; }
-    .window { transform: none; }
-    .float-card { left: 0.5rem; bottom: -1rem; }
-    .hero__photo { inset: -3% -3% -8% -3%; }
+    .hero__grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .hero__photo { inset: -1rem -1rem -3rem -1rem; }
+    .hero__mock { transform: none; }
+    .dash__body { grid-template-columns: 1fr; }
+    .dash__nav { display: none; }
+    .dash__kpis { grid-template-columns: repeat(2, 1fr); }
+    .dash__bars { height: 80px; }
   }
   @media (max-width: 560px) {
     .hero__photo { display: none; }

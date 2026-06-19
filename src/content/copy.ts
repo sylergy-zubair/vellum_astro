@@ -29,14 +29,41 @@ export const hero = {
   secondaryCta: { href: "#lead-demo", label: "Request a demo" },
   primaryIntent: "trial" as const,
   secondaryIntent: "demo" as const,
-  // Visual: client account reconciliation panel
+  /* Dashboard mock data — a domain-specific agency analytics view. */
   visual: {
-    windowTitle: "Client account reconciliation",
-    rows: [
-      { label: "Rent received",     amount: "£  8,420.00", tone: "neutral" as const },
-      { label: "Deposit held",       amount: "£  4,950.00", tone: "neutral" as const },
-      { label: "Maintenance paid",   amount: "£    550.00", tone: "neutral" as const },
-      { label: "Reconciled balance", amount: "£ 14,820.00", tone: "ok"      as const },
+    brand: "Vellum",
+    page: "Branch overview",
+    range: "Last 12 months",
+    nav: [
+      { label: "Overview",  active: true  },
+      { label: "Properties", active: false },
+      { label: "Applicants", active: false },
+      { label: "Tenancies",  active: false },
+      { label: "Client money", active: false },
+      { label: "Reports",   active: false },
+    ],
+    kpis: [
+      { label: "Properties under management", value: "248",  delta: "+12 this month", tone: "ok" as const },
+      { label: "Tenants onboarded",           value: "1,074", delta: "+86 YTD",        tone: "ok" as const },
+      { label: "Revenue, MTD",                value: "£184k", delta: "+18% vs Oct",    tone: "ok" as const },
+      { label: "Reconciliations",             value: "100%",  delta: "On track",       tone: "ok" as const },
+    ],
+    /* Bar chart: instructions won per month, 12 months. Heights 0-100. */
+    chart: {
+      title: "Instructions won",
+      unit: "properties",
+      bars: [
+        { m: "J", h: 38 }, { m: "F", h: 52 }, { m: "M", h: 44 },
+        { m: "A", h: 60 }, { m: "M", h: 71 }, { m: "J", h: 58 },
+        { m: "J", h: 66 }, { m: "A", h: 78 }, { m: "S", h: 84 },
+        { m: "O", h: 72 }, { m: "N", h: 90 }, { m: "D", h: 96 },
+      ],
+    },
+    feed: [
+      { tone: "ok"   as const, text: "Instruction won · 3-bed semi, Highgate N6",     meta: "Aisha H · 14:02" },
+      { tone: "ok"   as const, text: "Deposit received · £1,950 · 14 Elm Park",          meta: "Rob O · 11:48" },
+      { tone: "brass" as const, text: "Viewing booked · Studio, Crouch End",             meta: "Jules M · 10:15" },
+      { tone: "ok"   as const, text: "Tenancy renewed · Flat 4, Muswell Hill",          meta: "System · 09:30" },
     ],
   },
 };
