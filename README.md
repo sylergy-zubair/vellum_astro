@@ -17,7 +17,12 @@ npm run preview      # serve the production build
 
 1. Push this repo to GitHub.
 2. In Cloudflare Pages, create a project pointing at this repo.
-3. Build command: `npm run build`. Build output: `dist`.
+3. **Build settings:**
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - **Deploy command:** `npx wrangler pages deploy dist --project-name vellum-landing --commit-dirty=true`
+
+   > Important: the deploy command must be `wrangler pages deploy` (not `wrangler deploy`). The latter is for Workers and will fail with `It looks like you've run a Workers-specific command in a Pages project`.
 4. Set environment variables (optional):
    - `PLAUSIBLE_DOMAIN` — e.g. `vellum.example` (loads Plausible analytics)
    - `RESEND_API_KEY` — to send a welcome email from `/api/lead`
@@ -25,6 +30,13 @@ npm run preview      # serve the production build
 5. In `wrangler.toml`, the `pages_build_output_dir` is already set to `./dist`.
 
 The Worker endpoint at `src/pages/api/lead.ts` is wired through the `@astrojs/cloudflare` adapter and runs as a Pages Function.
+
+### One-off deploy from your machine
+
+```bash
+npm run build
+npm run deploy:pages   # = wrangler pages deploy dist --project-name vellum-landing
+```
 
 ## Architecture
 
